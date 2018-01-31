@@ -416,11 +416,12 @@ int isGameOver(struct gameState *state) {
 
 int scoreFor (int player, struct gameState *state) {
 
-  int i;
+  int i; 
   int score = 0;
+  
   //score from hand
   for (i = 0; i < state->handCount[player]; i++)
-    {
+    {	
       if (state->hand[player][i] == curse) { score = score - 1; };
       if (state->hand[player][i] == estate) { score = score + 1; };
       if (state->hand[player][i] == duchy) { score = score + 3; };
@@ -647,7 +648,7 @@ int getCost(int cardNumber)
 // ASSIGNMENT 2 ADDITIONS START HERE -- (Added individual functions for 5 cards, and added one bug per function) 
 //***********************************************************************************************************************************
 
-int playAdventurer(struct gameState *state, int *drawntreasure, int *currentPlayer, int *cardDrawn, int *temphand[], int *z) {
+int playAdventurer(struct gameState *state, int *drawntreasure, int *currentPlayer, int *cardDrawn, int *temphand, int *z) {
 	
 	while(*drawntreasure < 2){
 		
@@ -659,11 +660,11 @@ int playAdventurer(struct gameState *state, int *drawntreasure, int *currentPlay
 		*cardDrawn = state->hand[*currentPlayer][state->handCount[*currentPlayer] - 1];//top card of hand is most recently drawn card.
 		
 		if (*cardDrawn == copper || *cardDrawn == silver) //BUG INTRODUCED FOR ASSIGNMENT 2: Removed *cardDrawn == gold
-			*drawntreasure++;
+			drawntreasure++;
 		else {
 			temphand[*z] = *cardDrawn;
 			state->handCount[*currentPlayer]--; //this should just remove the top card (the most recently drawn one).
-			*z++;
+			z++;
 		}
     }
 	
@@ -684,7 +685,7 @@ int playSmithy(struct gameState *state, int *handPos, int *currentPlayer) {
     for (i = 0; i < 4; i++) {
 		drawCard(*currentPlayer, state);
 	}
-			
+		
 	//discard card from hand
 	discardCard(*handPos, *currentPlayer, state, 0);
 	
@@ -764,7 +765,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	//THESE FIRST 5 ACTIONS HAVE BEEN MOVED TO THEIR OWN INDIVIDUAL FUNCTIONS FOR ASSIGNMENT 2
 	//*****************************************************************************************
     case adventurer:
-		return playAdventurer(state, &drawntreasure, &currentPlayer, &cardDrawn, &temphand, &z);
+		return playAdventurer(state, &drawntreasure, &currentPlayer, &cardDrawn, temphand, &z);
 		
     case smithy:
 		return playSmithy(state, &handPos, &currentPlayer);

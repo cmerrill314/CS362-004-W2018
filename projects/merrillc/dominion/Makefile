@@ -6,7 +6,7 @@ rngs.o: rngs.h rngs.c
 dominion.o: dominion.h dominion.c rngs.o
 	gcc -c dominion.c -g  $(CFLAGS)
 
-#To run playdom you need to enter: ./playdom <any integer number> like ./playdom 10*/
+# To run playdom you need to enter: ./playdom <any integer number> like ./playdom 10*/
 playdom: dominion.o playdom.c
 	gcc -o playdom playdom.c -g dominion.o rngs.o $(CFLAGS)
 	
@@ -30,8 +30,8 @@ runtests: testDrawCard
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
-#Unit Tests	 for Assignment 3
-unittestresults.out: unittest1.c unittest2.c unittest3.c rngs.c dominion.c
+# Unit Tests for Assignment 3
+unittestresults.out: unittest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c rngs.c dominion.c
 	echo "*** UNIT TEST RESULTS ***" > unittestresults.out
 
 	echo "-----------------------------------------------------" >> unittestresults.out
@@ -89,6 +89,26 @@ unittestresults.out: unittest1.c unittest2.c unittest3.c rngs.c dominion.c
 	cardtest4 >> unittestresults.out
 	echo -e "\nCard Test 4 Coverage:\n" >> unittestresults.out
 	gcov dominion.c >> unittestresults.out
+
+# Random Tests for Assignment 4	
+randomtestresults.out: randomtestcard1.c randomtestcard2.c randomtestadventurer.c rngs.c dominion.c
+	echo "*** RANDOM TEST CARD 1 (SMITHY)***" > randomtestcard1.out
+	gcc -o randomtestcard1 rngs.c dominion.c randomtestcard1.c $(CFLAGS)
+	randomtestcard1 >> randomtestcard1.out
+	echo -e "\nRandom Test Card 1 Coverage:\n" >> randomtestcard1.out
+	gcov dominion.c >> randomtestcard1.out
+	
+	echo "*** RANDOM TEST CARD 2 (VILLAGE)***" > randomtestcard2.out
+	gcc -o randomtestcard2 rngs.c dominion.c randomtestcard2.c $(CFLAGS)
+	randomtestcard2 >> randomtestcard2.out
+	echo -e "\nRandom Test Card 2 Coverage:\n" >> randomtestcard2.out
+	gcov dominion.c >> randomtestcard2.out
+	
+	echo "*** RANDOM TEST CARD 3 (ADVENTURER)***" > randomtestadventurer.out
+	gcc -o randomtestadventurer rngs.c dominion.c randomtestadventurer.c $(CFLAGS)
+	randomtestadventurer >> randomtestadventurer.out
+	echo -e "\nRandom Test Card 3 Coverage:\n" >> randomtestadventurer.out
+	gcov dominion.c >> randomtestadventurer.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)

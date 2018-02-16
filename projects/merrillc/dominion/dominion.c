@@ -651,20 +651,21 @@ int getCost(int cardNumber)
 int playAdventurer(struct gameState *state, int *drawntreasure, int *currentPlayer, int *cardDrawn, int *temphand, int *z) {
 	
 	while(*drawntreasure < 2){
-		
+
 		if (state->deckCount[*currentPlayer] < 1) {//if the deck is empty we need to shuffle discard and add to deck
 			shuffle(*currentPlayer, state);
 		}
 		
 		drawCard(*currentPlayer, state);
 		*cardDrawn = state->hand[*currentPlayer][state->handCount[*currentPlayer] - 1];//top card of hand is most recently drawn card.
-		
-		if (*cardDrawn == copper || *cardDrawn == silver) //BUG INTRODUCED FOR ASSIGNMENT 2: Removed *cardDrawn == gold
-			drawntreasure++;
+
+		if (*cardDrawn == copper || *cardDrawn == silver) { //BUG INTRODUCED FOR ASSIGNMENT 2: Removed *cardDrawn == gold
+			*drawntreasure = *drawntreasure + 1;
+		}
 		else {
 			temphand[*z] = *cardDrawn;
-			state->handCount[*currentPlayer]--; //this should just remove the top card (the most recently drawn one).
-			z++;
+			state->handCount[*currentPlayer]--; //this should just remove the top card (the most recently drawn one).		
+			*z = *z + 1;
 		}
     }
 	
@@ -673,7 +674,7 @@ int playAdventurer(struct gameState *state, int *drawntreasure, int *currentPlay
 		state->discard[*currentPlayer][state->discardCount[*currentPlayer]++] = temphand[*z - 1]; 
 		*z = *z - 1;
     }
-	
+
 	return 0;
 }
 

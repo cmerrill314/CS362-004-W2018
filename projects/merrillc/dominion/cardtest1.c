@@ -74,7 +74,7 @@ void testSmithy() {
 	handSize = testG.handCount[player];
 	prevDeckSize = G.deckCount[player];
 	deckSize = testG.deckCount[player];
-	prevDiscardSize = G.handCount[player];
+	prevDiscardSize = G.discardCount[player];
 	discardSize = testG.discardCount[player];
 	
 	//Print Results
@@ -99,16 +99,7 @@ void testSmithy() {
 	supplyPassed = 1;
 	
 	//Check victory cards, curse and coin cards piles first
-	for (i = 0; i <= gold; i++) {
-		prevSupplyCount = supplyCount(i, &G);
-		postSupplyCount = supplyCount(i, &testG);
-		
-		if (prevSupplyCount != postSupplyCount)
-			supplyPassed = 0;
-	}
-	
-	//Next check all playable kingdom cards
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < 27; i++) {
 		prevSupplyCount = supplyCount(i, &G);
 		postSupplyCount = supplyCount(i, &testG);
 		

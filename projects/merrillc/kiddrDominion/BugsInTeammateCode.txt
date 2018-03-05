@@ -1,0 +1,94 @@
+-----------------------------------------------------------------------------------
+                                    BUG REPORT #1
+-----------------------------------------------------------------------------------
+Title:           Adventurer Card Failing to Discard After Being Played
+Product:         dominion.c
+Classification:  Serious bug in regards to game mechanics
+Platform:        FLIP 
+Reproducibility: Every Time
+
+Description:
+------------------- 
+When running cardtest2.c, the purpose of which is to test the functionality of the 
+Adventurer card, it is apparent that the number of discarded cards is one less than 
+the expected value. This is reinforced when running randomtestadventurer.c, which 
+shows one extra card in the players hand after playing adventurer (indicating one 
+card hasn’t been discarded). Since the non-treasure cards are all accounted for in 
+the discard pile, and the count is always off by one card, it is believed that the 
+missing card from the discard pile is the Adventurer card itself. 
+
+Steps to Reproduce:
+-------------------
+For unit testing, stack a deck with known values and compare the discard count before 
+and after playing the Adventurer card. Compare the expected discard count to the actual 
+discard count. This is the process used when running “make unittestresults.out”.
+
+For random testing, check the players hand before and after playing adventurer for 
+randomly generated decks. Their hand count should increase by 2, and those two cards 
+should be treasure cards. Compare the expected hand count and hand contents before and 
+after playing Adventurer to identify any issues. This is the process used when running 
+“make randomtestresults.out”. 
+
+Expected Results:
+-------------------
+1) Hand count should increase by 1 (2 cards drawn, Adventurer discarded) when running 
+both randomtestadventurer.c and cardtest2.c.
+
+2) Discard pile should increase by 4 in all cases of cardtest2.c.
+
+Actual Results:
+-------------------
+1) Hand count increased by 2 in all 10,000 iterations of randomtestadventurer.c and 
+all cases of cardtest2.c.
+
+2) Discard pile increased by 3 in all unit tests of cardtest2.c.
+
+Contact Info: 
+-------------------
+Christopher Merrill – merrillc@oregonstate.edu
+
+-----------------------------------------------------------------------------------
+                                    BUG REPORT #2
+-----------------------------------------------------------------------------------
+
+Title:           Incorrect Player Score with scoreFor() Function
+Product:         dominion.c
+Classification:  Serious bug in regards to game mechanics
+Platform:        FLIP
+Reproducibility: Every Time
+
+Description: 
+-------------------
+When running unittest4.c, the purpose of which is to test the functionality of the 
+scoreFor() function, it is apparent there are two issues: The score for the Gardens 
+card is not being calculated correctly the score from the players deck is incorrect 
+in most cases. Lines 433, 444 and 455 use the card code 0 when counting Gardens in 
+a player’s deck, however this is actually the card code for Curse cards. Also, in 
+line 448, the for-loop only iterates up to the size of the discard pile rather than 
+the deck pile. This would cause the score from deck to be incorrect when the deck 
+and discard piles differ in size. 
+
+Steps to Reproduce:
+-------------------
+The method used in unittest4.c is to stack the players deck, hand and discard pile 
+with known cards and then compare the actual score with the expected score. When 
+placing only Gardens into the player’s piles, it should be apparent that the score 
+is always 0 (no matter the number of Gardens used). When calculating the score from 
+the player’s deck, it should be apparent that the actual value differs from the 
+expected value whenever the deck and discard piles have a different size. 
+
+Expected Results:
+-------------------
+In the file unittestresults.out (see attachment below), we should see passing results 
+for the score from hand, score from deck, score from discard and score from hand, deck 
+and discard combined. This is indicative of an accurate score count for the player. 
+
+Actual Results:
+-------------------
+In unittestresults.out (see attachment below), we see failing results for the Gardens 
+card in all cases. The score from deck is incorrect for all cards, which then causes 
+the combined score to be incorrect for all cards.  
+
+Contact Info: 
+-------------------
+Christopher Merrill – merrillc@oregonstate.edu
